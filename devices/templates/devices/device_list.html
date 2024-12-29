@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leasable Devices</title>
+    <div style="text-align: right;">
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</head>
+<body>
+    <h1>Available Devices for Lease</h1>
+    <ul>
+        {% for device in devices %}
+            <li>
+                <h2>{{ device.name }}</h2>
+                <p>{{ device.description }}</p>
+                <p>Price: {{ device.price }} ₺</p>
+                <p>Status: {{ device.status }}</p>
+                <a href="{% url 'device_detail' device.id %}">View Details</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

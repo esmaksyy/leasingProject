@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Details</title>
+</head>
+<body>
+    <h1>{{ device.name }}</h1>
+    <p>{{ device.description }}</p>
+    <p>Price: {{ device.price }} ₺</p>
+    <p>Status: {{ device.status }}</p>
+    <p>Coordinates: {{ device.latitude }}, {{ device.longitude }}</p>
+    <p>Created Date: {{ device.created_at }}</p>
+    <p>Updated Date: {{ device.updated_at }}</p>
+
+    {% if device.status == "AVAILABLE" %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <button type="submit">Lease This Device</button>
+        </form>
+    {% else %}
+        <p>This device is currently not available for leasing.</p>
+    {% endif %}
+
+    <a href="{% url 'device_list' %}">Back to Device List</a>
+</body>
+</html>
