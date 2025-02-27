@@ -15,7 +15,7 @@
     <p>Updated Date: {{ device.updated_at }}</p>
 
     {% if device.status == "AVAILABLE" %}
-        <form action="" method="POST">
+        <form action="{% url 'device_lease' device_id=device.id %}" method="POST">
             {% csrf_token %}
             <button type="submit">Lease This Device</button>
         </form>

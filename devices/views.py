@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Device
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from .models import Device
 
 def login_view(request):
     if request.method == "POST":
@@ -29,3 +31,14 @@ class DeviceDetailView(View):
     def get(self, request, device_id):
         device = get_object_or_404(Device, id=device_id)
         return render(request, 'devices/device_detail.html', {'device': device})
+
+@method_decorator(login_required, name='dispatch')
+class DeviceLeaseView(View):
+    def post(self, request, device_id):
+        device = get_object_or_404(Device, id=device_id)
+        
+        if device.status != 'AVAILABLE':
+            return HttpResponse("This device is not available for lease.", status=400)
+
+        device.lease_device(request.user)
+        return redirect('device_detail', device_id=device.id)

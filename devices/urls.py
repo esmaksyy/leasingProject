@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import DeviceListView, DeviceDetailView, login_view, custom_logout_view
+from .views import DeviceListView, DeviceDetailView, DeviceLeaseView, login_view, custom_logout_view
 from django.views.generic.base import RedirectView
 urlpatterns = [
     path('', RedirectView.as_view(url='/login/', permanent=False)),
@@ -7,4 +7,5 @@ urlpatterns = [
     path('devices/', DeviceListView.as_view(), name='device_list'),
     path('devices/<int:device_id>/', DeviceDetailView.as_view(), name='device_detail'),
     path('logout/', custom_logout_view, name='logout'),
+    path('devices/<int:device_id>/lease/', DeviceLeaseView.as_view(), name='device_lease'),
 ]
