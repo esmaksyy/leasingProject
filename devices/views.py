@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .models import Device
+from .models import Device, Lease
 
 def login_view(request):
     if request.method == "POST":
@@ -42,3 +42,9 @@ class DeviceLeaseView(View):
 
         device.lease_device(request.user)
         return redirect('device_detail', device_id=device.id)
+
+@method_decorator(login_required, name='dispatch')
+class LeaseListView(View):
+    def get(self, request):
+        leases = Lease.objects.filter(user=request.user, returned_at__isnull=True)
+        return render(request, 'devices/leased_devices.html', {'leases': leases})

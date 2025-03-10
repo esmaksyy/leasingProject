@@ -1,0 +1,12 @@
+<h2>Your Leased Devices</h2>
+<ul>
+    {% for lease in leases %}
+        <li>
+            {{ lease.device.name }} - Leased on: {{ lease.leased_at }}
+            <a href="{% url 'device_detail' device_id=lease.device.id %}">Details</a>
+        </li>
+    {% empty %}
+        <p>You haven't leased any devices yet.</p>
+    {% endfor %}
+</ul>
+<a href="{% url 'device_list' %}">Back to Available Devices</a>
