@@ -19,6 +19,11 @@
             {% csrf_token %}
             <button type="submit">Lease This Device</button>
         </form>
+    {% elif device.status == "LEASED" and device.lease_set.first.user == request.user %}
+        <form action="{% url 'device_return' device_id=device.id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit">Return This Device</button>
+        </form>
     {% else %}
         <p>This device is currently not available for leasing.</p>
     {% endif %}
@@ -26,3 +31,4 @@
     <a href="{% url 'device_list' %}">Back to Device List</a>
 </body>
 </html>
+

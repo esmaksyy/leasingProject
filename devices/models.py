@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.utils import timezone
 
 class Device(models.Model):
     name = models.CharField(max_length=100)
@@ -22,9 +23,9 @@ class Device(models.Model):
             Lease.objects.create(device=self, user=user)
 
     def return_device(self):
-        self.status = 'AVAILABLE'
+        Lease.objects.filter(device=self, returned_at__isnull=True).update(returned_at=timezone.now())
+        self.status = "AVAILABLE"
         self.save()
-        Lease.objects.filter(device=self, returned_at__isnull=True).update(returned_at=models.DateTimeField(auto_now=True))
 
 class Lease(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
